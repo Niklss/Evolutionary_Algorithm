@@ -1,5 +1,6 @@
 import numpy
-import multiprocessing
+from itertools import product
+
 from PIL import Image, ImageDraw
 
 
@@ -9,6 +10,8 @@ def cal_pop_fitness(input_image_array, pop):
 
     # fitness = numpy.sum(pop * equation_inputs, axis=1)
     fitness = []
+
+    input_image_array, pop = zip(*zip)
 
     for i in pop:
         diff = 0
@@ -112,20 +115,25 @@ def mutation(offspring_crossover):
 
 
 def multi_fitness(input_image_array, pop, p):
-    results = p.apply(cal_pop_fitness, (input_image_array, pop,))
+    results = p.map(cal_pop_fitness, zip(numpy.asarray(input_image_array), pop))
     return results
 
 
 def multi_selection(pop, fitness, num_parents, p):
-    results = p.apply(select_mating_pool, (pop, fitness, num_parents,))
+    results = p.starmap(select_mating_pool, Container({'pop': pop, 'fitness': fitness, 'num_parents': num_parents}))
     return results
 
 
 def multi_crossover(parents, offspring_size, input_image, new_image, p):
-    results = p.apply(crossover, (parents, offspring_size, input_image, new_image,))
+    results = p.starmap(crossover, product(parents, offspring_size, input_image, new_image, ))
     return results
 
 
 def multi_mutation(offspring_crossover, p):
-    results = p.apply(mutation, (offspring_crossover,))
+    results = p.starmap(mutation, product(offspring_crossover, ))
     return results
+
+
+class Container:
+    def __init__(self, **kwargs):
+        self.__dict__.update(kwargs)

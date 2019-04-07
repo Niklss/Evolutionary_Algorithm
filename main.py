@@ -2,7 +2,7 @@ import multiprocessing
 
 import numpy
 import GA
-from PIL import Image, ImageDraw
+from PIL import Image
 
 
 def create_image(array, index, name):
@@ -47,8 +47,10 @@ def main(cores):
     for generation in range(num_generations):
         print("Generation : ", generation)
 
+
         # Measure the fitness of each chromosome in the population.
         fitness = GA.multi_fitness(input_image, new_num_population, p)
+
 
         # Selecting the best parents in the population for mating.
         parents = GA.multi_selection(new_num_population, fitness,
@@ -80,4 +82,5 @@ def main(cores):
 
 if __name__ == "__main__":
     cores = max(1, multiprocessing.cpu_count())
+    multiprocessing.freeze_support()
     main(cores)
