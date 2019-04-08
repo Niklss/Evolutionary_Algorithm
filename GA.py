@@ -27,6 +27,7 @@ def cal_pop_fitness(input_image_array, pop):
         fitness.append(diff)
     return fitness
 
+
 def find_nearest(array, value):
     array = numpy.asarray(array)
     idx = (numpy.abs(array - value)).argmin()
@@ -56,8 +57,8 @@ def crossover(parents, offspring_size, input_image, new_image):
 
         new_image_original = Image.new('RGB', (512, 512), 'WHITE')
         image_original = ImageDraw.Draw(new_image_original)
-        rand_step = numpy.random.randint(1, 5)
-        for i in range(rand_step, input_image.shape[0], 4):
+        # rand_step = numpy.random.randint(1, 5)
+        for i in range(input_image.shape[0]):
             y = i // 512
             x = i % 512
             radius_x = 10
@@ -84,8 +85,12 @@ def crossover(parents, offspring_size, input_image, new_image):
                 image_original.ellipse((x - radius_y, y - radius_x, x + radius_y, y + radius_x), fill=(
                     int(parents[parent2_idx][i][0]), int(parents[parent2_idx][i][1]), int(parents[parent2_idx][i][2])))
 
-        offspring[k, 0:crossover_point] = parents[parent1_idx, 0:crossover_point]
-        offspring[k, crossover_point:] = parents[parent2_idx, crossover_point:]
+        if numpy.random.randint(0, 2) > 0.5:
+            offspring[k, 0:crossover_point] = parents[parent1_idx, 0:crossover_point]
+            offspring[k, crossover_point:] = parents[parent2_idx, crossover_point:]
+        else:
+            offspring[k, 0:crossover_point] = parents[parent2_idx, 0:crossover_point]
+            offspring[k, crossover_point:] = parents[parent1_idx, crossover_point:]
         new_image_original = numpy.array(new_image_original.getdata())
         for i in range(offspring_size[1]):
             if sum(new_image_original[i]) > 0:
