@@ -18,6 +18,7 @@ def main(cores):
     sol_per_pop = 30
     num_parents_mating = 15
     colors = 3  # RGB
+    num_generations = 20
 
     input_image = Image.open(IMAGE_NAME)
     width, height = input_image.size
@@ -38,7 +39,6 @@ def main(cores):
     #         i[j][2] += input_image[j][2] / 2
     create_image(new_num_population, 0, DIR + '/rand_generation.jpg')
 
-    num_generations = 30
     p = multiprocessing.Pool(cores)
     for generation in range(num_generations):
         print("Generation : ", generation)
