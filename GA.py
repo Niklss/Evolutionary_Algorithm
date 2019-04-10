@@ -1,7 +1,6 @@
 import numpy
 from PIL import ImageDraw, Image
 from main import create_image
-from main import DIR
 
 
 def cal_pop_fitness(input_image_array, pop):
@@ -34,7 +33,7 @@ def find_nearest(array, value):
     return idx
 
 
-def select_mating_pool(pop, fitness, num_parents, generation):
+def select_mating_pool(pop, fitness, num_parents, generation, DIR):
     # Selecting the best individuals in the current generation as parents for producing the offspring of the next generation.
     parents = numpy.empty((num_parents, pop.shape[1], pop.shape[2]))
     max_fitness_idx = find_nearest(array=fitness, value=0)
@@ -61,8 +60,8 @@ def crossover(parents, offspring_size, input_image, new_image):
         for i in range(input_image.shape[0]):
             y = i // 512
             x = i % 512
-            radius_x = 10
-            radius_y = 7
+            radius_x = 7
+            radius_y = 4
             dif_1 = 0
             dif_2 = 0
             dif_1 += abs(input_image[i][0] - parents[parent1_idx][i][0])

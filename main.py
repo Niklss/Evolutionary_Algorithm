@@ -2,9 +2,10 @@ import multiprocessing
 import numpy
 import GA
 from PIL import Image
+import os
 
-DIR = "generations"
-IMAGE_NAME = "input.jpg"
+dir_name = "generations"
+
 
 def create_image(array, index, name):
     num_picture = [(i[0], i[1], i[2]) for i in array[index]]
@@ -13,12 +14,12 @@ def create_image(array, index, name):
     new_image.save(name)
 
 
-def main(cores):
+def main(cores, DIR, IMAGE_NAME):
     print("Preparation")
-    sol_per_pop = 30
-    num_parents_mating = 15
+    sol_per_pop = 40
+    num_parents_mating = 20
     colors = 3  # RGB
-    num_generations = 20
+    num_generations = 50
 
     input_image = Image.open(IMAGE_NAME)
     width, height = input_image.size
@@ -50,7 +51,7 @@ def main(cores):
         print("Selecting")
         # Selecting the best parents in the population for mating.
         parents = GA.select_mating_pool(new_num_population, fitness,
-                                        num_parents_mating, generation)
+                                        num_parents_mating, generation, DIR)
 
         print("Crossover")
         # Generating next generation using crossover.
@@ -80,4 +81,12 @@ def main(cores):
 
 if __name__ == "__main__":
     cores = max(1, multiprocessing.cpu_count())
-    main(cores)
+    files = ['input.jpg']
+    for i in files:
+        DIR = dir_name + '_' + i[:-4]
+        IMAGE_NAME = i
+        try:
+            os.mkdir(DIR)
+        except:
+            pass
+        main(cores, DIR, IMAGE_NAME)
