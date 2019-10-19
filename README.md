@@ -1,8 +1,10 @@
 # Evolutionary_Algorithm
 What is it:
+
 In artificial intelligence, an evolutionary algorithm (EA) is a subset of evolutionary computation, a generic population-based metaheuristic optimization algorithm. An EA uses mechanisms inspired by biological evolution, such as reproduction, mutation, recombination, and selection. Candidate solutions to the optimization problem play the role of individuals in a population, and the fitness function determines the quality of the solutions (see also loss function). Evolution of the population then takes place after the repeated application of the above operators. 
 
 What is this project about:
+
 The main idea of this project is to find can an AI create a piece of art. In this project we couldn't use ML or NN algorithms, the only acceptable algorithm was evolutionary.
 
 Installation:
